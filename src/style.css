@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* Tema Minimalista Simplificado para SafeStock - Controle de Estoque */
+@theme {
+  --color-primary: #38a169;
+  --color-primary-hover: #2f855a;
+  --color-primary-light: #d1e9dc;
+  
+  --color-secondary: #3182ce;
+  --color-secondary-hover: #2c5282;
+  --color-secondary-light: #d1e5fa;
+  
+  --color-text: #374151;
+  --color-text-dark: #111827;
+  --color-text-light: #6b7280;
+  
+  --color-background: #ffffff;
+  --color-background-alt: #f3f4f6;
+  
+  --border-radius: 0.25rem;
+  --border-radius-lg: 0.5rem;
+  
+  --shadow-sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)";
+  --shadow: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)";
+  --shadow-lg: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)";
+}
+
+/* Estilos globais e utilitários */
+html {
+  scroll-behavior: smooth;
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.text-dark {
+  color: var(--color-text-dark);
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-light {
+  background-color: var(--color-background-alt);
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.btn-outline {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary-light);
+}
+
+.card {
+  background-color: white;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.container-custom {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.gradient-primary {
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+}
+
+/* Estilos globais simplificados */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-white text-neutral-700 font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium text-neutral-900;
+  }
+  
+  a {
+    @apply text-primary-500 hover:text-primary-700 transition-colors;
+  }
+}
+
+/* Componentes personalizados simplificados */
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded transition-all duration-200 font-medium;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-500 text-white hover:bg-primary-700;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary-500 text-white hover:bg-secondary-700;
+  }
+  
+  .btn-outline {
+    @apply border border-primary-500 text-primary-500 hover:bg-primary-100;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow p-6;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4;
+  }
+}
+
+/* Utilitários personalizados simplificados */
+@layer utilities {
+  .gradient-primary {
+    @apply bg-gradient-to-r from-primary-500 to-secondary-500;
+  }
+}
