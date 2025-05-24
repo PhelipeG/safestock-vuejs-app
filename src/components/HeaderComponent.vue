@@ -94,6 +94,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 import { 
   Package2, 
   Bell, 
@@ -120,6 +121,7 @@ const vClickOutside = {
 
 // Router
 const router = useRouter();
+const authStore = useAuthStore();
 
 // Estado do menu de usuário
 const userMenuOpen = ref(false);
@@ -127,11 +129,12 @@ const userMenuOpen = ref(false);
 // Estado de notificações
 const notificationCount = ref(2);
 
-// Dados do usuário (mock)
-const user = ref({
-  name: 'Luis Silva',
-  role: 'Administrador',
-  avatar: '', // Se vazio, mostrará as iniciais
+// Dados do usuário (vindo do store de auth)
+const user = computed(() => {
+  return {
+    name: authStore.user?.name || 'Usuário',
+    avatar: '', // Se vazio, mostrará as iniciais
+  };
 });
 
 // Computed
@@ -156,18 +159,14 @@ const closeUserMenu = () => {
 
 const navigateTo = (path: string) => {
   closeUserMenu();
-  router.push(path);
+  router.push(path); // Mantemos essa forma para caminhos genéricos
 };
 
 const logout = () => {
   // Lógica para deslogar o usuário
   closeUserMenu();
-  // Exemplo: Limpar tokens, etc
-  // localStorage.removeItem('token');
-  router.push('/login');
+  authStore.logout(); // Usar o método de logout do store
+  router.push({ name: 'login' });
 };
 </script>
 
-<style scoped>
-/* Qualquer estilo adicional específico para este componente */
-</style>

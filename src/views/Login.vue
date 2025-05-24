@@ -102,26 +102,7 @@
               v-if="isLoading"
               class="absolute left-0 inset-y-0 flex items-center pl-3"
             >
-              <svg
-                class="animate-spin h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  class="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="4"
-                ></circle>
-                <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+              <SpinnerComponent size="5" color="text-white" :showLabel="false" />
             </span>
             {{ isLoading ? "Entrando..." : "Entrar" }}
           </button>
@@ -154,16 +135,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
-const router = useRouter();
+import { useAuthStore } from "../stores/auth";
+import SpinnerComponent from "../components/SpinnerComponent.vue";
 import z from "zod";
+
+const router = useRouter();
+const authStore = useAuthStore();
 
 const email = ref("");
 const password = ref("");
 const rememberMe = ref(false);
-const isLoading = ref(false);
 const errorMessage = ref("");
+
+const isLoading = computed(() => authStore.loading);
+const storeError = computed(() => authStore.error);
 
 const errors = reactive<{ email?: string; password?: string }>({});
 
@@ -198,34 +185,44 @@ const handleLogin = async () => {
         }
       });
       return;
-    }
+    }    // Limpar mensagens de erro anteriores
+    errorMessage.value = "";
 
-    isLoading.value = true;
-
-    // Simulando uma chamada de API (substitua por sua lógica de autenticação real)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Simulando login bem-sucedido
-    router.push("/dashboard");
-    console.log("Login bem-sucedido:", {
+    // Fazer requisição HTTP para autenticar o usuário
+    const success = await authStore.login({
       email: email.value,
-      password: password.value,
-      rememberMe: rememberMe.value,
+      password: password.value
     });
+
+    if (success) {
+      // Se lembrar-me estiver marcado, podemos fazer alguma lógica adicional aqui
+      if (rememberMe.value) {
+        // Por exemplo, poderíamos definir uma data de expiração mais longa
+        console.log("Lembrar-me ativo");
+      }
+      
+      // Redirecionar para o dashboard após login bem-sucedido
+      router.push({ name: "dashboard" });
+      console.log("Login bem-sucedido:", {
+        email: email.value,
+        rememberMe: rememberMe.value,
+      });
+    } else {
+      // Se houver um erro na store, exibir esse erro
+      errorMessage.value = storeError.value || "Falha na autenticação. Verifique suas credenciais.";
+    }
   } catch (error) {
     errorMessage.value = "Falha na autenticação. Verifique suas credenciais.";
     console.error("Erro de login:", error);
-  } finally {
-    isLoading.value = false;
   }
 };
 
 const goToSignUp = () => {
-  router.push("/signup");
+  router.push({ name: "signup" });
 };
 
 const goToHome = () => {
-  router.push("/");
+  router.push({ name: "home" });
 };
 </script>
 

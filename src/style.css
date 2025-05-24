@@ -122,7 +122,7 @@ html {
   }
   
   a {
-    @apply text-primary-500 hover:text-primary-700 transition-colors;
+    @apply text-primary hover:text-primary transition-colors;
   }
 }
 
@@ -133,15 +133,16 @@ html {
   }
   
   .btn-primary {
-    @apply bg-primary-500 text-white hover:bg-primary-700;
+    @apply bg-primary text-white;
   }
   
   .btn-secondary {
-    @apply bg-secondary-500 text-white hover:bg-secondary-700;
+    @apply bg-secondary text-white;
   }
   
   .btn-outline {
-    @apply border border-primary-500 text-primary-500 hover:bg-primary-100;
+    @apply border text-primary;
+    border-color: var(--color-primary);
   }
   
   .card {
@@ -156,6 +157,6 @@ html {
 /* Utilitários personalizados simplificados */
 @layer utilities {
   .gradient-primary {
-    @apply bg-gradient-to-r from-primary-500 to-secondary-500;
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
   }
 }
